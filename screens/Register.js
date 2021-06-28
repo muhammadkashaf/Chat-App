@@ -45,8 +45,8 @@ function Register({ navigation }) {
             await AsyncStorage.setItem('userPhone', number);
             firebase
                 .database()
-                .ref("users")
-                .set({ number: number, userName: userName, bio: bio, imageUri: imageUri })
+                .ref("users/")
+                .push({ number: number, userName: userName, bio: bio, imageUri: imageUri })
             navigation.navigate('Home');
         }
     };
