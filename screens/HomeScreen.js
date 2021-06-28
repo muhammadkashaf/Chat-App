@@ -31,11 +31,11 @@ export default class HomeScreen extends Component {
 
   UNSAFE_componentWillMount() {
     let dbRef = firebase.database().ref('users');
-    dbRef.on('child_added', val => {
+    dbRef.on('value', val => {
       let person = val.val();
       person.phone = val.key;
-      if (person.phone === User.phone) {
-        User.name = person.name;
+      if (person.number === User.phone) {
+        User.name = person.userName;
       } else {
         this.setState(prevState => {
           return {
@@ -56,7 +56,7 @@ export default class HomeScreen extends Component {
       <TouchableOpacity
         onPress={() => this.props.navigation.navigate('Chat', item)}
         style={{padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1}}>
-        <Text style={{fontSize: 20}}>{item.name}</Text>
+        <Text style={{fontSize: 20}}>{item.userName}</Text>
       </TouchableOpacity>
     );
   };
@@ -71,7 +71,7 @@ export default class HomeScreen extends Component {
         <FlatList
           data={this.state.users}
           renderItem={this.renderRow}
-          keyExtractor={item => item.phone}
+          keyExtractor={item => item.number}
         />
       </SafeAreaView>
     );
