@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -32,7 +32,7 @@ class ProfileScreen extends Component {
   };
 
   handleChange = key => val => {
-    this.setState({[key]: val});
+    this.setState({ [key]: val });
   };
 
   _logout = async () => {
@@ -41,7 +41,7 @@ class ProfileScreen extends Component {
   };
 
   handleChoosePhoto = () => {
-    this.setState({loading: true});
+    this.setState({ loading: true });
 
     const options = {
       noData: true,
@@ -67,11 +67,11 @@ class ProfileScreen extends Component {
         const imageRef = storageRef;
         fs.readFile(uploadUri, 'base64')
           .then(data => {
-            return Blob.build(data, {type: `${mime};BASE64`});
+            return Blob.build(data, { type: `${mime};BASE64` });
           })
           .then(blob => {
             uploadBlob = blob;
-            return imageRef.put(blob, {contentType: mime});
+            return imageRef.put(blob, { contentType: mime });
           })
           .then(() => {
             uploadBlob.close();
@@ -85,7 +85,7 @@ class ProfileScreen extends Component {
                 .database()
                 .ref('users')
                 .child(User.phone)
-                .set({name: User.name, image: url});
+                .set({ name: User.name, image: url });
             }
           })
           .catch(error => {
@@ -107,24 +107,24 @@ class ProfileScreen extends Component {
         .database()
         .ref('users')
         .child(User.phone)
-        .update({name: this.state.name});
+        .update({ name: this.state.name });
       User.name = this.state.name;
       console.log('Success!!!', 'You have successfully changed your name!');
     }
   };
 
   render() {
-    const {image} = this.state;
+    const { image } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         {image ? (
           <Image
-            source={{uri: image.uri}}
-            style={{width: 200, height: 200, borderRadius: 100}}
+            source={{ uri: image.uri }}
+            style={{ width: 200, height: 200, borderRadius: 100 }}
           />
         ) : User.image ? (
           <Image
-            source={{uri: User.image}}
+            source={{ uri: User.image }}
             style={{
               width: 200,
               height: 200,
@@ -144,17 +144,11 @@ class ProfileScreen extends Component {
           />
         )}
 
-        <Button title="Choose photo" onPress={this.handleChoosePhoto} />
-        <Text style={{fontSize: 20}}>Mobile Number: {User.phone}</Text>
-        <TextInput
-          style={styles.input}
-          value={this.state.name}
-          onChangeText={this.handleChange('name')}
-        />
-        <TouchableOpacity onPress={this.changeName}>
-          <Text style={styles.btnTextUpdate}>update name</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this._logout}>
+        <Button title="Choose photo" onPress={() => { }} />
+        <Text style={{ fontSize: 20, marginTop: 10 }}>Mobile Number: {User.phone}</Text>
+
+
+        <TouchableOpacity onPress={() => this._logout()}>
           <Text style={styles.btnTextLogout}>Logout</Text>
         </TouchableOpacity>
       </SafeAreaView>

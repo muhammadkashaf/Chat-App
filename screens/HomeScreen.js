@@ -54,16 +54,12 @@ const HomeScreen = ({ navigation }) => {
     }
   }
 
-  const _logOut = async () => {
-    await AsyncStorage.clear();
-    navigation.navigate("Auth");
-  }
   return (
     <SafeAreaView style={styles.container}>
 
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Chat</Text>
-        <TouchableOpacity style={{ marginRight: 20 }} onPress={() => _logOut()}>
+        <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate("Profile")}>
           <LogoutIcon name="logout" size={20} />
         </TouchableOpacity>
       </View>
@@ -125,6 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     width: 50,
     height: 50,
+    backgroundColor: 'lightgrey'
   },
   name: {
     fontSize: 20,

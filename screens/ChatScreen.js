@@ -1,5 +1,5 @@
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   SafeAreaView,
@@ -15,9 +15,11 @@ import styles from '../constants/styles';
 import User from '../User';
 
 export default class ChatScreen extends Component {
-  static navigationOptions = ({route}) => ({
+  static navigationOptions = ({ route }) => ({
     title: route.params.name,
   });
+
+
 
   constructor(props) {
     super(props);
@@ -29,6 +31,8 @@ export default class ChatScreen extends Component {
       textMessage: '',
       messageList: [],
     };
+
+    console.log(User.phone);
   }
 
   UNSAFE_componentWillMount() {
@@ -47,7 +51,7 @@ export default class ChatScreen extends Component {
   }
 
   handleChange = key => val => {
-    this.setState({[key]: val});
+    this.setState({ [key]: val });
   };
 
   convertTime = time => {
@@ -85,11 +89,12 @@ export default class ChatScreen extends Component {
         .database()
         .ref()
         .update(updates);
-      this.setState({textMessage: ''});
+      this.setState({ textMessage: '' });
     }
   };
 
-  renderRow = ({item}) => {
+  renderRow = ({ item }) => {
+    console.log("item from renderROw", item);
     return (
       <View
         style={{
@@ -100,10 +105,10 @@ export default class ChatScreen extends Component {
           borderRadius: 10,
           marginBottom: 10,
         }}>
-        <Text style={{color: '#fff', padding: 7, fontSize: 16}}>
+        <Text style={{ color: '#fff', padding: 7, fontSize: 16 }}>
           {item.message}
         </Text>
-        <Text style={{color: '#eee', padding: 3, fontSize: 12}}>
+        <Text style={{ color: '#eee', padding: 3, fontSize: 12 }}>
           {this.convertTime(item.time)}
         </Text>
       </View>
@@ -111,12 +116,12 @@ export default class ChatScreen extends Component {
   };
 
   render() {
-    let {height, width} = Dimensions.get('window');
+    let { height, width } = Dimensions.get('window');
 
     return (
       <SafeAreaView>
         <FlatList
-          style={{padding: 10, height: height * 0.8}}
+          style={{ padding: 10, height: height * 0.8 }}
           data={this.state.messageList}
           renderItem={this.renderRow}
           keyExtractor={(item, index) => index.toString()}
@@ -135,10 +140,10 @@ export default class ChatScreen extends Component {
           />
           <TouchableOpacity
             onPress={this.sendMessage}
-            style={{paddingBottom: 10, marginLeft: 5}}>
+            style={{ paddingBottom: 10, marginLeft: 5 }}>
             <Image
               source={require('../images/send-button.png')}
-              style={{width: 32, height: 32, marginRight: 5, marginLeft: 5}}
+              style={{ width: 32, height: 32, marginRight: 5, marginLeft: 5 }}
             />
           </TouchableOpacity>
         </View>
