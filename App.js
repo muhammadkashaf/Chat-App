@@ -18,6 +18,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import Register from './screens/Register';
 import OnBoardingScreens from "./screens/OnBoardingScreens";
 
+
 const Stack = createStackNavigator();
 
 const App = () => {
