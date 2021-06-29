@@ -9,8 +9,8 @@ import AuthLoadingScreen from './screens/AuthLoadingScreen';
 import ChatScreen from './screens/ChatScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import * as firebase from "firebase";
-import Otp from './screens/Otp';
 import Register from './screens/Register';
+import OnBoardingScreens from "./screens/OnBoardingScreens";
 
 const Stack = createStackNavigator();
 
@@ -55,16 +55,17 @@ class App extends React.Component {
               headerShown: false,
             }}
           />
+        
           <Stack.Screen
-            name="Otp"
-            component={Otp}
+            name="Register"
+            component={Register}
             options={{
               headerShown: false,
             }}
           />
-          <Stack.Screen
-            name="Register"
-            component={Register}
+           <Stack.Screen
+            name="Onbording"
+            component={OnBoardingScreens}
             options={{
               headerShown: false,
             }}
