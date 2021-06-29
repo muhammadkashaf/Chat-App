@@ -70,6 +70,7 @@ const HomeScreen = ({ navigation }) => {
 
       <SearchBar
         placeholder="Type Here..."
+        lightTheme
         onChangeText={(text) => filterUsers(text)}
         value={search}
       />
