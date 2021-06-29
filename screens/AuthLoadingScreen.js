@@ -16,7 +16,7 @@ export default class AuthLoadingScreen extends React.Component {
   };
 
   render() {
-    return (
+    return (  
       <View>
         <ActivityIndicator />
         <StatusBar barStyle="default" />
