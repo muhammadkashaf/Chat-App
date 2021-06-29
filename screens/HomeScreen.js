@@ -82,26 +82,28 @@
 
 import AsyncStorage from '@react-native-community/async-storage'
 import * as firebase from 'firebase'
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+
 import { View, Text, FlatList, Image, TouchableOpacity, SafeAreaView } from 'react-native'
 
 const HomeScreen = ({ navigation }) => {
-  const [users, setUsers] = React.useState([])
-  console.log("users****", users);
+  const [users, setUsers] = useState([])
 
   if (!AsyncStorage.getItem('userPhone')) {
     navigation.navigate("Auth")
   }
-
-  React.useEffect(() => {
-    var ref = firebase.database().ref('users');
-
-    ref.on('value', (snapshot) => {
-      Object.values(snapshot.val()).map(res => {
-        console.log("values", res);
-        setUsers({ users: res })
-      })
-    });
+const getAllUsers = ()=>{
+  const array = []
+  var ref = firebase.database().ref('users');
+  ref.on('value', (snapshot) => {
+    Object.values(snapshot.val()).map(res => {
+      array.push(res)
+      setUsers({ users: array })
+    })
+  });
+}
+  useEffect(() => {
+   getAllUsers()
   }, [])
 
   const _logOut = async () => {
@@ -113,22 +115,34 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView>
+      {/* {console.log("users===============",users)} */}
       {/* <FlatList data={users} renderItem={(item) => console.log("item", item.key)} /> */}
       {/* {users.users.map(res => console.log("map", map))} */}
-
-      {users.users.map(item => {
+    
+      {/* {users.users.map(item => {
         console.log(item);
-      })}
-      <TouchableOpacity
-        onPress={() => this.props.navigation.navigate('Chat')}
-        style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}>
-        <Text style={{ fontSize: 20, color: 'black' }}>{ }</Text>
-      </TouchableOpacity>
+      })} */}
+      {/* {console.log(users.users)} */}
+      {users.users ? users.users.map((item, index) => {
+                        return (
+                          <TouchableOpacity
+                          onPress={()=>navigation.navigate('Chat',{item})}
+                          style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}>
+                          <Text style={{ fontSize: 20, color: 'black' }}>{item.userName}</Text>
+                        </TouchableOpacity>
+                        )
+                    })
+                    :
+                    <Text style={{ fontSize: 20, color: 'black' }}>{"NO user Found"}</Text>
+                    
+                    }
+
 
       <Text onPress={_logOut}>Logout</Text>
+      
 
 
-    </SafeAreaView>
+    </SafeAreaView> 
   )
 }
 

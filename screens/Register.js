@@ -47,6 +47,7 @@ function Register({ navigation }) {
                 .database()
                 .ref("users/")
                 .push({ number: number, userName: userName, bio: bio, imageUri: imageUri })
+                
             navigation.navigate('Home');
         }
     };

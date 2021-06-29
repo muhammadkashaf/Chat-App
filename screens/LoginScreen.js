@@ -93,11 +93,28 @@ function Login({ navigation }) {
   const [data, setData] = useState([])
 
   const phoneInput = useRef(null);
+  const getAllUsers = () => {
+    const array = []
+    firebase.database().ref('users').on('value', snapshot => {
+      Object.values(snapshot.val()).map(res => {
+        array.push(res)
+        setData({ data: array })
 
-  React.useEffect(() => {
-    firebase.database().ref('users/').on('value', snapshot => {
-      setData(snapshot.val())
+      })
     });
+  }
+  // React.useEffect(() => {
+  //   firebase.database().ref('users').on('value', snapshot => {
+  //     console.log(snapshot.val())
+  //     Object.values(snapshot.val()).map(res => {
+  //       setData(res)
+
+  //     })
+  //   });
+  // }, [])
+
+  useEffect(() => {
+    getAllUsers()
   }, [])
 
   const navigateToHome = () => {
@@ -109,13 +126,16 @@ function Login({ navigation }) {
     // if (number.length < 10) {
     //   Alert.alert('Error', 'Please enter your phone number');
     // }
-    if (data.number === number) {
-      await AsyncStorage.setItem('userPhone', number);
-      navigateToHome();
-      alert("Success")
-    }
-    else {
-      Alert.alert("User Not Exists")
+    // console.log(number)
+    for (let i = 0; i < data.data.length; i++) {
+      if (data.data[i].number === number) {
+        await AsyncStorage.setItem('userPhone', number);
+        navigateToHome();
+        alert("Success")
+      }
+      else {
+        Alert.alert("User Not Exists")
+      }
     }
 
   };

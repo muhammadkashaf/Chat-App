@@ -1,4 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
+
 import React, {Component} from 'react';
 import {
   View,
@@ -23,8 +23,8 @@ export default class ChatScreen extends Component {
     super(props);
     this.state = {
       person: {
-        name: props.route.params.name,
-        phone: props.route.params.phone,
+        name: this.props.route.params.item.name,
+        phone: this.props.route.params.item.number,
       },
       textMessage: '',
       messageList: [],
@@ -112,6 +112,7 @@ export default class ChatScreen extends Component {
 
   render() {
     let {height, width} = Dimensions.get('window');
+
     return (
       <SafeAreaView>
         <FlatList
