@@ -7,13 +7,7 @@ let width = Dimensions.get('window').width;
 
 function Button({ title, onPress, myHi }) {
     const [message, setMessage] = useState('6.5%');
-    useEffect(() => {
 
-        //  if(myHi){
-        //     setMessage(myHi)
-        //  }
-
-    });
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -33,6 +27,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: height * 0.05,
-        // marginBottom: "20%"
     },
 })

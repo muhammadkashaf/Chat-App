@@ -1,5 +1,6 @@
 import React from 'react';
-import {ActivityIndicator, AsyncStorage, StatusBar, View} from 'react-native';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import User from '../User';
 
 export default class AuthLoadingScreen extends React.Component {
@@ -12,11 +13,11 @@ export default class AuthLoadingScreen extends React.Component {
   _bootstrapAsync = async () => {
     User.phone = await AsyncStorage.getItem('userPhone');
     console.log(User.phone);
-    this.props.navigation.navigate(User.phone ? 'Home' : 'Auth');
+    this.props.navigation.navigate(User.phone ? 'Home' : 'Onbording');
   };
 
   render() {
-    return (  
+    return (
       <View>
         <ActivityIndicator />
         <StatusBar barStyle="default" />

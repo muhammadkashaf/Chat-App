@@ -15,10 +15,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Button from "../components/Button";
 import PhoneInput from "react-native-phone-number-input";
+import Loader from "../components/Loader"
 
 import * as firebase from 'firebase';
 import AsyncStorage from '@react-native-community/async-storage';
-
 
 
 let height = Dimensions.get('window').height;
@@ -31,23 +31,26 @@ function Register({ navigation }) {
     const [userName, setUserName] = useState('');
     const [bio, setBio] = useState('');
     const [imageUri, setImageUri] = useState(null);
-    console.log(imageUri, "imageUri****");
+    const [loading, setLoading] = useState(false);
+
 
     const handleRegister = async () => {
+        setLoading(true);
         if (number.length < 10) {
+            setLoading(false);
             Alert.alert('Error', 'Please enter your phone number');
         }
         else if (userName.length < 5) {
+            setLoading(false);
             Alert.alert('Error', 'Enter name more than 5 Character');
         }
         else {
-            //Save user
             await AsyncStorage.setItem('userPhone', number);
             firebase
                 .database()
                 .ref("users/")
                 .push({ number: number, userName: userName, bio: bio, imageUri: imageUri })
-                
+            setLoading(false);
             navigation.navigate('Home');
         }
     };
@@ -83,15 +86,7 @@ function Register({ navigation }) {
             }
         });
     }
-    const handlePress = () => {
-        addInfo(
-            userName,
-            bio,
-            imageUri,
-        );
-        alert("success1")
 
-    };
     return (
         <KeyboardAvoidingView style={{ flex: 1 }}>
             <ScrollView>
@@ -102,10 +97,6 @@ function Register({ navigation }) {
                         <Image source={{ uri: imageUri }} style={styles.pic} />
                     </TouchableOpacity>
 
-                    {/* < TouchableOpacity style={styles.icon} >
-                        <Icon name="camera" size={20} color="white" />
-                    </TouchableOpacity > */}
-
                     <PhoneInput
                         ref={phoneInput}
                         defaultValue={number}
@@ -115,7 +106,6 @@ function Register({ navigation }) {
                         }}
                         containerStyle={styles.phnInput}
                         textContainerStyle={styles.containerInput}
-                        withShadow
                     />
 
                     <TextInput
@@ -131,16 +121,18 @@ function Register({ navigation }) {
                         onChangeText={text => setBio(text)}
                     />
 
-                    <Button title="Register" onPress={handleRegister} />
+                    {!loading ? (
+                        <Button title="Register" onPress={handleRegister} />
+                    ) : (
+                        <Loader />
+                    )}
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('Login')}>
+                        onPress={() => navigation.navigate('Auth')}>
                         <Text style={styles.phntext}>Have Account? SignIn</Text>
                     </TouchableOpacity>
 
                 </View>
-
             </ScrollView>
-
         </KeyboardAvoidingView >
     );
 }
@@ -176,7 +168,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     textinput: {
-        height: 40,
+        height: "7%",
         width: '80%',
         borderWidth: 1,
         marginTop: height * 0.03,
@@ -189,17 +181,20 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: 'bold',
         marginBottom: '20%',
+        marginTop: 20
     },
     phnInput: {
-        height: '6%',
-        //  // width:"80%",
+        height: "7%",
         borderWidth: 1,
         marginTop: height * 0.09,
         borderRadius: 30,
-        //   padding:9,
         borderColor: 'lightgrey',
         alignItems: 'center',
         backgroundColor: 'transparent',
-        //   justifyContent:"center"
+    },
+    containerInput: {
+        backgroundColor: 'transparent',
+        paddingTop: 0,
+        paddingBottom: 0,
     },
 })
