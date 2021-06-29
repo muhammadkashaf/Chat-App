@@ -10,9 +10,14 @@ import {
   SafeAreaView,
   StyleSheet
 } from 'react-native'
+import { SearchBar } from 'react-native-elements';
+
 
 const HomeScreen = ({ navigation }) => {
   const [users, setUsers] = useState([])
+  const [search, setSearch] = useState('')
+  const [filteredData, setFilteredData] = useState([])
+  console.log("users", users);
 
   if (!AsyncStorage.getItem('userPhone')) {
     navigation.navigate("Auth")
@@ -23,7 +28,8 @@ const HomeScreen = ({ navigation }) => {
     ref.on('value', (snapshot) => {
       Object.values(snapshot.val()).map(res => {
         array.push(res)
-        setUsers({ users: array })
+        setUsers(array)
+        setFilteredData(array);
       })
     });
   }
@@ -31,6 +37,22 @@ const HomeScreen = ({ navigation }) => {
     getAllUsers()
   }, [])
 
+  const filterUsers = (text) => {
+    if (text) {
+      const newData = users.filter((item) => {
+        const itemData = item.userName ? item.userName.toUpperCase()
+          : ''.toLocaleLowerCase();
+
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredData(newData);
+      setSearch(text);
+    } else {
+      setFilteredData(users);
+      setSearch(text);
+    }
+  }
 
   const _logOut = async () => {
     await AsyncStorage.clear();
@@ -46,8 +68,14 @@ const HomeScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
+      <SearchBar
+        placeholder="Type Here..."
+        onChangeText={(text) => filterUsers(text)}
+        value={search}
+      />
+
       <View style={styles.subContainer}>
-        {users.users ? users.users.map((item, index) => {
+        {users ? filteredData.map((item, index) => {
           console.log("items***", item.imageUri);
           return (
             <TouchableOpacity
@@ -60,6 +88,7 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )
+
         })
           :
           <Text style={styles.heading}>{"No user Found"}</Text>
