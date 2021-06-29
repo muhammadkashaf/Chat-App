@@ -12,6 +12,7 @@ import * as firebase from "firebase";
 import Register from './screens/Register';
 import OnBoardingScreens from "./screens/OnBoardingScreens";
 
+
 const Stack = createStackNavigator();
 
 class App extends React.Component {
